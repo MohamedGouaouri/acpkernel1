@@ -2,6 +2,8 @@ package kernel;
 
 import weka.core.matrix.Matrix;
 
+import java.io.File;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -11,5 +13,11 @@ public class Main {
         Matrix matrix = new Matrix(data);
         Util.replaceColumn(matrix, new Matrix(3, 1), 0);
         System.out.println(matrix.toMatlab());
+
+        System.out.println(String.format("orl/p1/%d.bmp", 3));
+
+
+
+
     }
 }

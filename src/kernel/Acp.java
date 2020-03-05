@@ -4,12 +4,16 @@ package kernel;
 import nz.ac.waikato.cs.weka.Utils;
 import weka.core.matrix.Matrix;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 public class Acp {
     private int totalTrainImagesNumber = 200;
     private int trainImagesNumber = 5;
     // TODO: 03/03/2020 give a value to threshold
     private double threshold;
     private Matrix dataSet;
+    private Matrix mean;
 
     private EigenSpace eigenSpace = null;
 
@@ -60,7 +64,7 @@ public class Acp {
         importFaces();
 
         // calculate mean
-        Matrix mean = calculerVisageMoyen(dataSet);
+        mean = calculerVisageMoyen(dataSet);
 
         // subtract mean from data set
         dataSet.minusEquals(Util.fillToDuplicatedMatrix(mean, dataSet.getColumnDimension()));
@@ -73,6 +77,7 @@ public class Acp {
         // create the eigenspace
         eigenSpace = creerEigenSpace(eigenvectors, dim);
 
+        // project data onto the new eigenspace
         Matrix projectedDataSet = projectData(eigenSpace, dataSet);
 
         return projectedDataSet;
@@ -82,6 +87,41 @@ public class Acp {
     // recognize the new image
     // TODO: 05/03/2020 Implement this tomorrow
     public Result recognize(Image inputFace){
+
+        // supposing our model was trained
+
+        // convert input face to vector
+        Matrix inputFaceMatrix = inputFace.imageToVector();
+
+        // subtract mean from inputFaceMatrix
+        inputFaceMatrix.minusEquals(mean);
+
+        // project the inputFaceMatrix onto the eigen space
+        Matrix projectedInputFaceMatrix = projectData(eigenSpace, inputFaceMatrix);
+
+        // calculate distances
+        ArrayList<Double> distances = new ArrayList<>();
+        for (int i = 0; i < dataSet.getColumnDimension() ; i++) {
+            distances.add(eigenSpace.calculateDistance(Util.getColumnVector(dataSet, i), projectedInputFaceMatrix));
+        }
+
+        int foundFaces = 0;
+        Iterator<Double> iterator = distances.iterator();
+        while (iterator.hasNext()){
+            if (iterator.next() <= threshold){
+                foundFaces++;
+            }
+        }
+        if (foundFaces == 0){
+            return Result.REJETE;
+        }
+        if (foundFaces == 1){
+            return Result.RECONNUE;
+        }
+        if (foundFaces > 1){
+            return Result.CONFUSION;
+        }
+
         return null;
     }
 
