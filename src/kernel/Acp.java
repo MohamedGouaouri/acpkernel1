@@ -37,6 +37,9 @@ public class Acp {
         return null;
     }
 
+
+
+    // project data onto the new eigenspace
     public Matrix projectData(EigenSpace eigenSpace, Matrix dataSet){
         // creating empty matrix that will hold the projected data on the new face space
         Matrix projectedData = new Matrix(eigenSpace.getDimension(), dataSet.getColumnDimension());
@@ -44,7 +47,8 @@ public class Acp {
         for (int i = 0; i < dataSet.getColumnDimension() ; i++) {
                 // coordinates matrix is a p x 1 matrix
                 Matrix coordinates = eigenSpace.getCoordinates(Util.getColumnVector(dataSet, i));
-
+                // insert coordinates matrix in the projected dataMatrix
+                Util.replaceColumn(projectedData, coordinates, i);
         }
 
         return projectedData;

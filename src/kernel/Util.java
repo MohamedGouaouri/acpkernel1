@@ -28,10 +28,10 @@ public class Util {
     }
 
     // TODO: 05/03/2020  Make secure
-    public static Matrix replaceColumn(Matrix matrix, Matrix column, int n){
+    public static void replaceColumn(Matrix matrix, Matrix column, int n){
         for (int i = 0; i < matrix.getRowDimension() ; i++) {
             matrix.set(i, n, column.get(i, 0));
         }
-        return matrix;
+        //return matrix;
     }
 }

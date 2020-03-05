@@ -10,8 +10,10 @@ public class Image extends javafx.scene.image.Image {
     }
 
 
-    public Matrix imageToVector(){
-        return null;
+    public Matrix imageToVector() {
+        double[]  data = {1, 2, 3, 4 ,5, 6};
+
+        return new Matrix(data, data.length);
     }
 
 }
