@@ -1,4 +1,7 @@
 package kernel;
+
+import weka.core.matrix.Matrix;
+
 //la classe java
 public class Image extends javafx.scene.image.Image {
 
@@ -6,7 +9,8 @@ public class Image extends javafx.scene.image.Image {
         super(url);
     }
 
-    public double[] imageToVector(){
+
+    public Matrix imageToVector(){
         return null;
     }
 

@@ -1,18 +1,21 @@
 package kernel;
+
+import weka.core.matrix.Matrix;
+
 //la classe eigenspace
 public class EigenSpace {
 
     private int dimension;
-    private double[][] basevectors;
-    public EigenSpace(int dimension, double[][] basevectors){
+    private Matrix basevectors;
+    public EigenSpace(int dimension, Matrix basevectors){
         this.dimension = dimension;
         this.basevectors = basevectors;
     }
-    public double calculateDistance(double[] v1, double[] v2){
+    public double calculateDistance(Matrix v1, Matrix v2){
         return 0;
     }
 
-    public double[] getCoordinates(double[] v){
+    public Matrix getCoordinates(Matrix v){
         return null;
     }
 
@@ -27,11 +30,11 @@ public class EigenSpace {
         this.dimension = dimension;
     }
 
-    public double[][] getBasevectors() {
+    public Matrix getBasevectors() {
         return basevectors;
     }
 
-    public void setBasevectors(double[][] basevectors) {
+    public void setBasevectors(Matrix basevectors) {
         this.basevectors = basevectors;
     }
 }

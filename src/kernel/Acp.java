@@ -1,144 +1,84 @@
 package kernel;
+//la classe acp
 
-
+import nz.ac.waikato.cs.weka.Utils;
 import weka.core.matrix.Matrix;
 
-import java.util.ArrayList;
-
 public class Acp {
-
     private int totalTrainImagesNumber = 200;
     private int trainImagesNumber = 5;
-
     // TODO: 03/03/2020 give a value to threshold
     private double threshold;
-    private double[][] dataSet;
+    private Matrix dataSet;
 
-    private EigenSpace eigenSpace;
+    private EigenSpace eigenSpace = null;
 
-    // PCA constructor
-    public Acp(double[][] dataSet){
+    public Acp(Matrix dataSet){
         this.dataSet = dataSet;
     }
 
     // TODO: 03/03/2020 implement this method
-    public void importerImages(){
+    public void importFaces(){
 
     }
     // TODO: 03/03/2020 implement this method
-    public double[] calculerVisageMoyen(double[][] dataSet){
+    public Matrix calculerVisageMoyen(Matrix dataSet){
         return null;
     }
 
+    // used to calculate the reduced dimension of the new eigenspace
+    public int getEigenSpaceDimension(Matrix eigenvectors){
+        return 0;
+    }
 
-    // TODO: 03/03/2020 implement this method
+
     // create the eigenspace from dataSet
-    public EigenSpace creerEigenSpace(double[][] eigenVectors, int dim){
+    public EigenSpace creerEigenSpace(Matrix eigenvectors, int dim){
         return null;
     }
 
-    // dimensionality reduction
-    public double[][] reduireDimension(double[][] eigenVectors){
-        return null;
-    }
+    public Matrix projectData(EigenSpace eigenSpace, Matrix dataSet){
+        // creating empty matrix that will hold the projected data on the new face space
+        Matrix projectedData = new Matrix(eigenSpace.getDimension(), dataSet.getColumnDimension());
 
+        for (int i = 0; i < dataSet.getColumnDimension() ; i++) {
+                // coordinates matrix is a p x 1 matrix
+                Matrix coordinates = eigenSpace.getCoordinates(Util.getColumnVector(dataSet, i));
 
-    // import a new face
-    public double[] importerVisage(String path){
-        return null;
-    }
-
-    // data projection on the new space
-    public double[][] projectData(EigenSpace eigenSpace, double[][] dataSet){
-        double[][] projectedData = new double[dataSet.length][eigenSpace.getDimension()];
-        for (int i = 0; i < dataSet.length; i++){
-            double[] coordinates = eigenSpace.getCoordinates(dataSet[i]);
-            projectedData[i] = coordinates;
         }
+
         return projectedData;
     }
 
     // our main method used to train the model
-    public double[][] trainModel(){
+    public Matrix trainModel(){
+        // import faced from database
+        importFaces();
 
-        // import images
-        importerImages();
+        // calculate mean
+        Matrix mean = calculerVisageMoyen(dataSet);
 
-        // calculate the mean
-        double[] mean = calculerVisageMoyen(dataSet);
+        // subtract mean from data set
+        dataSet.minusEquals(Util.fillToDuplicatedMatrix(mean, dataSet.getColumnDimension()));
 
-        // create data set matrix
-        Matrix dataSetMatrix = new Matrix(dataSet);
-
-        // subtract the mean from the data set
-        dataSetMatrix.minus(new Matrix(mean, 1));
-
-        // get covariance matrix eigenvalues and eigenvectors
-        Matrix eigenVectors = dataSetMatrix.svd().getU();
+        // calculate the eigenvectors of the covariance matrix
+        Matrix eigenvectors = dataSet.svd().getU();
+        // the reduced eigenspace dimension
+        int dim = getEigenSpaceDimension(eigenvectors);
 
         // create the eigenspace
-        int dim = reduireDimension(eigenVectors.getArray()).length; // eigenspace dimension
-        eigenSpace = creerEigenSpace(eigenVectors.getArray(), dim);
+        eigenSpace = creerEigenSpace(eigenvectors, dim);
 
-        // data projection on the new space
-        double[][] projectedDataSet = projectData(eigenSpace, dataSet);
+        Matrix projectedDataSet = projectData(eigenSpace, dataSet);
 
         return projectedDataSet;
     }
 
 
     // recognize the new image
-    public Result recognize(Image inputFace, double[][] projectedDataSet){
-
-        assert eigenSpace != null;
-
-        double[] faceData = inputFace.imageToVector();
-        // calculate distances
-        ArrayList<Double> distances = new ArrayList<>();
-        for (int i = 0; i < totalTrainImagesNumber; i++){
-            distances.add(eigenSpace.calculateDistance(faceData, projectedDataSet[i]));
-        }
-
-        int elementsLessThanThresholdNum = 0;
-        for (double d:distances
-             ) {
-            if (d <= threshold){
-                elementsLessThanThresholdNum ++;
-            }
-        }
-        if (elementsLessThanThresholdNum == 0){
-            return Result.REJETE;
-        }
-        if (elementsLessThanThresholdNum == 1){
-            return Result.RECONNUE;
-        }
-        else {
-            return Result.CONFUSION;
-        }
+    // TODO: 05/03/2020 Implement this tomorrow
+    public Result recognize(Image inputFace){
+        return null;
     }
 
-    // setters and getters
-    public int getTotalTrainImagesNumber() {
-        return totalTrainImagesNumber;
-    }
-
-    public void setTotalTrainImagesNumber(int totalTrainImagesNumber) {
-        this.totalTrainImagesNumber = totalTrainImagesNumber;
-    }
-
-    public int getTrainImagesNumber() {
-        return trainImagesNumber;
-    }
-
-    public void setTrainImagesNumber(int trainImagesNumber) {
-        this.trainImagesNumber = trainImagesNumber;
-    }
-
-    public double getThreshold() {
-        return threshold;
-    }
-
-    public void setThreshold(double threshold) {
-        this.threshold = threshold;
-    }
 }
