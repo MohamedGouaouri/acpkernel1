@@ -8,8 +8,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Acp {
+
     private int totalTrainImagesNumber = 200;
     private int trainImagesNumber = 5;
+
     // TODO: 03/03/2020 give a value to threshold
     private double threshold;
     private Matrix dataSet;
@@ -22,20 +24,22 @@ public class Acp {
     }
 
     // TODO: 03/03/2020 implement this method
-    public void importFaces(){
+    public void importFaces(){}
 
-    }
     // TODO: 03/03/2020 implement this method
     public Matrix calculerVisageMoyen(Matrix dataSet){
         return null;
     }
 
+
+    // TODO: 05/03/2020 Implement this method
     // used to calculate the reduced dimension of the new eigenspace
     public int getEigenSpaceDimension(Matrix eigenvectors){
         return 0;
     }
 
 
+    // TODO: 05/03/2020 Implement this method
     // create the eigenspace from dataSet
     public EigenSpace creerEigenSpace(Matrix eigenvectors, int dim){
         return null;
@@ -85,10 +89,9 @@ public class Acp {
 
 
     // recognize the new image
-    // TODO: 05/03/2020 Implement this tomorrow
     public Result recognize(Image inputFace){
 
-        // supposing our model was trained
+        // suppose our model was trained
 
         // convert input face to vector
         Matrix inputFaceMatrix = inputFace.imageToVector();
@@ -118,11 +121,7 @@ public class Acp {
         if (foundFaces == 1){
             return Result.RECONNUE;
         }
-        if (foundFaces > 1){
-            return Result.CONFUSION;
-        }
-
-        return null;
+        return Result.CONFUSION;
     }
 
 }

@@ -27,7 +27,7 @@ public class Util {
         return matrix;
     }
 
-    // TODO: 05/03/2020  Make secure
+    // TODO: 05/03/2020  Make it secure
     public static void replaceColumn(Matrix matrix, Matrix column, int n){
         for (int i = 0; i < matrix.getRowDimension() ; i++) {
             matrix.set(i, n, column.get(i, 0));
