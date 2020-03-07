@@ -2,14 +2,14 @@ package kernel;
 
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfDouble;
-import org.opencv.core.Scalar;
 import weka.core.matrix.Matrix;
 
 
+// Util class is used for general purpose operations
 public class Util {
 
     // TODO: 05/03/2020 make it secure
+    // get a specified column vector from weka matrix
     public static Matrix getColumnVector(Matrix data, int n){
         assert n < data.getColumnDimension();
         double[] v = new double[data.getRowDimension()];
@@ -20,6 +20,7 @@ public class Util {
     }
 
     // TODO: 05/03/2020 make it secure
+    // fill matrix columns with a given vector
     public static Matrix fillToDuplicatedMatrix(Matrix vector, int n){
         // create new matrix filled with zero of dimension len(v) x n
         Matrix matrix = new Matrix(vector.getRowDimension(), n);
@@ -32,7 +33,8 @@ public class Util {
         return matrix;
     }
 
-    // TODO: 05/03/2020  Make it secure
+    // TODO: 05/03/2020  Make it secure: because matrix and vector must have the same row dimension
+    // replace a specified column fof matrix with a vector
     public static void replaceColumn(Matrix matrix, Matrix column, int n){
         for (int i = 0; i < matrix.getRowDimension() ; i++) {
             matrix.set(i, n, column.get(i, 0));
@@ -41,6 +43,8 @@ public class Util {
     }
 
 
+    // TODO: 07/03/2020 make it secure because matrices must have the dimensions
+    // construct weka matrix from opencv matrix
     public static Matrix matcvToMatrix(Mat mat){
         Matrix matrix = new Matrix(mat.rows(), mat.cols());
         for (int i = 0; i < matrix.getRowDimension(); i++) {
@@ -51,6 +55,8 @@ public class Util {
         return matrix;
     }
 
+    // TODO: 07/03/2020 make it secure because matrices must have the dimensions
+    // construct opencv matrix from weka weka matrix
     public static Mat matrixToMatcv(Matrix matrix){
         Mat matcv = new Mat(matrix.getRowDimension(), matrix.getColumnDimension(), CvType.CV_8UC1);
         for (int i = 0; i < matrix.getRowDimension(); i++) {

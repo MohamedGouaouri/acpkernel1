@@ -1,6 +1,7 @@
 package kernel;
 //la classe acp
 
+import javafx.scene.image.Image;
 import nz.ac.waikato.cs.weka.Utils;
 import weka.core.matrix.Matrix;
 
@@ -64,6 +65,7 @@ public class Acp {
 
     // our main method used to train the model
     public Matrix trainModel(){
+
         // import faced from database
         importFaces();
 
@@ -89,12 +91,12 @@ public class Acp {
 
 
     // recognize the new image
-    public Result recognize(ImageMat inputFace){
+    public Result recognize(Image inputFace){
 
         // suppose our model was trained
 
         // convert input face to vector
-        Matrix inputFaceMatrix = inputFace.imageToVector();
+        Matrix inputFaceMatrix = ImageMat.imageToVector(inputFace);
 
         // subtract mean from inputFaceMatrix
         inputFaceMatrix.minusEquals(mean);
