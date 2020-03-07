@@ -1,6 +1,11 @@
 package kernel;
 
+import org.opencv.core.CvType;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfDouble;
+import org.opencv.core.Scalar;
 import weka.core.matrix.Matrix;
+
 
 public class Util {
 
@@ -32,6 +37,28 @@ public class Util {
         for (int i = 0; i < matrix.getRowDimension() ; i++) {
             matrix.set(i, n, column.get(i, 0));
         }
-        //return matrix;
+
     }
+
+
+    public static Matrix matcvToMatrix(Mat mat){
+        Matrix matrix = new Matrix(mat.rows(), mat.cols());
+        for (int i = 0; i < matrix.getRowDimension(); i++) {
+            for (int j = 0; j < matrix.getColumnDimension(); j++) {
+                matrix.set(i, j, mat.get(i, j)[0]);
+            }
+        }
+        return matrix;
+    }
+
+    public static Mat matrixToMatcv(Matrix matrix){
+        Mat matcv = new Mat(matrix.getRowDimension(), matrix.getColumnDimension(), CvType.CV_8UC1);
+        for (int i = 0; i < matrix.getRowDimension(); i++) {
+            for (int j = 0; j < matrix.getColumnDimension(); j++) {
+                matcv.put(i, j, matrix.get(i, j));
+            }
+        }
+        return matcv;
+    }
+
 }

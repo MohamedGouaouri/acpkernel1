@@ -89,7 +89,7 @@ public class Acp {
 
 
     // recognize the new image
-    public Result recognize(Image inputFace){
+    public Result recognize(ImageMat inputFace){
 
         // suppose our model was trained
 
@@ -105,6 +105,7 @@ public class Acp {
         // calculate distances
         ArrayList<Double> distances = new ArrayList<>();
         for (int i = 0; i < dataSet.getColumnDimension() ; i++) {
+            // TODO: 06/03/2020 I mean by data set the projected one
             distances.add(eigenSpace.calculateDistance(Util.getColumnVector(dataSet, i), projectedInputFaceMatrix));
         }
 
