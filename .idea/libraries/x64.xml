@@ -3,7 +3,7 @@
     <CLASSES />
     <JAVADOC />
     <NATIVE>
-      <root url="file://D:/ProgrameFiles/opencv/opencv/build/java/x64" />
+      <root url="file://$PROJECT_DIR$/lib/opencv/build/java/x64" />
     </NATIVE>
     <SOURCES />
   </library>

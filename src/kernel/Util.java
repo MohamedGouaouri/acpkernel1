@@ -43,7 +43,7 @@ public class Util {
     }
 
 
-    // TODO: 07/03/2020 make it secure because matrices must have the dimensions
+    // TODO: 07/03/2020 make it secure because matrices must have the same dimensions
     // construct weka matrix from opencv matrix
     public static Matrix matcvToMatrix(Mat mat){
         Matrix matrix = new Matrix(mat.rows(), mat.cols());
@@ -55,7 +55,7 @@ public class Util {
         return matrix;
     }
 
-    // TODO: 07/03/2020 make it secure because matrices must have the dimensions
+    // TODO: 07/03/2020 make it secure because matrices must have the same dimensions
     // construct opencv matrix from weka weka matrix
     public static Mat matrixToMatcv(Matrix matrix){
         Mat matcv = new Mat(matrix.getRowDimension(), matrix.getColumnDimension(), CvType.CV_8UC1);

@@ -32,9 +32,33 @@ public class ImageMat{
     }
 
     // construct weka one dimensional vector from an image
-    // TODO: 07/03/2020 implement this 
-    public static Matrix imageToVector(Image image){
-        return null;
+    public static Matrix imageToVector(String path){
+
+        Mat mat = imageToMatcv(path);
+        Matrix matrix = Util.matcvToMatrix(mat);
+        double[] packedArray = matrix.getRowPackedCopy();
+        return new Matrix(packedArray, packedArray.length);
+    }
+
+    // TODO: 11/03/2020 implement this
+    public static Image vectorToImage(Matrix matrix) {
+        int h = 112;
+        int w = 92;
+        Matrix out = new Matrix(h, w);
+        int i = 0;
+        int j = 0;
+        int k = 0;
+        while (i < h * w){
+            out.set(k, j, matrix.get(i, 0));
+            j++;
+            i++;
+            if (j == w - 1){
+                k++;
+                j = 0;
+            }
+        }
+
+        return matcvToImage(Util.matrixToMatcv(matrix));
     }
 
 }
