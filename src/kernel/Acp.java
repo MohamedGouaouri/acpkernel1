@@ -64,7 +64,7 @@ public class Acp {
 
 
     // used to calculate the reduced dimension of the new eigenspace
-    public static Matrix reduireDimensions(Matrix eigenvectors, Matrix eigenvalues){
+    public Matrix reduireDimensions(Matrix eigenvectors, Matrix eigenvalues){
 
         double perc = 0.9;
         double trace = eigenvalues.trace();
