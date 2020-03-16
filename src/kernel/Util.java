@@ -67,4 +67,21 @@ public class Util {
         return matcv;
     }
 
+
+    // used to diagonal elements
+    public static Matrix squareDiagonal(Matrix matrix){
+        Matrix out = new Matrix(matrix.getRowDimension(), matrix.getColumnDimension()) ;
+        if (matrix.getRowDimension() < matrix.getColumnDimension()){
+            for (int i = 0; i < matrix.getRowDimension(); i++) {
+                out.set(i, i, Math.pow(matrix.get(i, i ), 2));
+            }
+        }
+        else {
+            for (int i = 0; i < matrix.getColumnDimension(); i++) {
+                out.set(i, i, Math.pow(matrix.get(i, i ), 2));
+            }
+        }
+        return out;
+    }
+
 }

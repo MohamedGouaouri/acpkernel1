@@ -26,7 +26,7 @@ public class Acp {
     private EigenSpace eigenSpace;
 
 
-    // TODO: 03/03/2020 implement this method
+    // TODO: 13/03/2020 method tested
     public Matrix importerImages(String path) throws IOException {
 
         File directory = new File(path);
@@ -47,7 +47,7 @@ public class Acp {
         return total;
     }
 
-
+    // TODO: 16/03/2020 method tested 
     public Matrix calculerVisageMoyen(Matrix dataSet){
         Matrix mean = new Matrix(dataSet.getRowDimension(), 1);
         int columnDim = dataSet.getColumnDimension();
@@ -63,21 +63,35 @@ public class Acp {
     }
 
 
-    // TODO: 05/03/2020 Implement this method
     // used to calculate the reduced dimension of the new eigenspace
-    public int reduireDimensions(Matrix eigenvectors){
-        return 0;
+    public static Matrix reduireDimensions(Matrix eigenvectors, Matrix eigenvalues){
+
+        double perc = 0.9;
+        double trace = eigenvalues.trace();
+        double s = 0;
+        int i = 0;
+        int cols = eigenvalues.getColumnDimension();
+        int rows = eigenvalues.getRowDimension();
+        while ((s <= perc * trace) && (i < cols) && (i < rows)){
+            s += eigenvalues.get(i, i);
+            i++;
+        }
+
+        Matrix out = new Matrix(eigenvectors.getRowDimension(), i);
+        for (int j = 0; j < i; j++) {
+            Util.replaceColumn(out, Util.getColumnVector(eigenvectors, j), j);
+        }
+        return out;
     }
 
 
-    // TODO: 05/03/2020 Implement this method
     // create the eigenspace from dataSet
     public EigenSpace creerEigenSpace(Matrix eigenvectors, int dim){
-        return null;
+        eigenSpace = new EigenSpace(eigenvectors, dim);
+        return eigenSpace;
     }
 
-
-
+    // TODO: 16/03/2020 test this method 
     // project data onto the new eigenspace
     public Matrix projectData(EigenSpace eigenSpace, Matrix dataSet){
 
@@ -95,10 +109,34 @@ public class Acp {
     }
 
 
+    // TODO: 14/03/2020 check this
+    public void calculateCenters(Matrix dataSet){
+        centers = new Matrix(dataSet.getRowDimension(), Math.floorDiv(dataSet.getColumnDimension(), 5));
+        int step=0;
+        Matrix c=null;
+        for (int i=0;i<eigenSpace.getDimension();i++)
+        {
+            Matrix x=new Matrix(dataSet.getRowDimension(),1);
+            //for (int j=0;j<dataset.getRowDimension();j++) x.set(j,1,dataset.get(i,j));
+            Util.replaceColumn(x,Util.getColumnVector(dataSet,i),i);
+            c=c.plus(eigenSpace.getCoordinates(x));
+            if ((i+1)%5==0) {
+                c=c.times(1 / 5);
+                /*for (int l=0;l<centers.getRowDimension();l++) {
+                    centers.set(i % 4, l, c.get(i % 4, l));
+                }*/
+                Util.replaceColumn(centers,c,i/4);
+                c=null;
+            }
+        }
+    }
+
+
+    // TODO: 16/03/2020 test this 
     // our main method used to train the model
     public Matrix trainModel() throws IOException {
 
-        // import faced from database
+        // import faces from database
         dataSet = importerImages(path);
 
         // calculate mean
@@ -109,22 +147,26 @@ public class Acp {
 
         // calculate the eigenvectors of the covariance matrix
         Matrix eigenvectors = dataSet.svd().getU();
+        Matrix singularValues = dataSet.svd().getS();
+        Matrix eigenvalues = Util.squareDiagonal(singularValues);
 
         // the reduced eigenspace dimension
-        int dim = reduireDimensions(eigenvectors);
+        Matrix newBase = reduireDimensions(eigenvectors, eigenvalues);
 
         // create the eigenspace
-        eigenSpace = creerEigenSpace(eigenvectors, dim);
+        eigenSpace = creerEigenSpace(newBase, newBase.getColumnDimension());
 
         // project data onto the new eigenspace
         Matrix projectedDataSet = projectData(eigenSpace, dataSet);
 
         // TODO: 11/03/2020 you need to calculate centers
+        calculateCenters(dataSet);
 
         return projectedDataSet;
     }
 
 
+    // TODO: 16/03/2020 test this 
     // recognize the new image
     public Result recognize(String path){
 

@@ -40,7 +40,7 @@ public class ImageMat{
         return new Matrix(packedArray, packedArray.length);
     }
 
-    // TODO: 11/03/2020 implement this
+    // TODO: 13/03/2020 tested
     public static Image vectorToImage(Matrix matrix) {
         int h = 112;
         int w = 92;
@@ -52,13 +52,12 @@ public class ImageMat{
             out.set(k, j, matrix.get(i, 0));
             j++;
             i++;
-            if (j == w - 1){
+            if (j == w){
                 k++;
                 j = 0;
             }
         }
-
-        return matcvToImage(Util.matrixToMatcv(matrix));
+        return matcvToImage(Util.matrixToMatcv(out));
     }
 
 }

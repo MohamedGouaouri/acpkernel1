@@ -1,6 +1,6 @@
 package kernel;
 
-import weka.core.EuclideanDistance;
+
 import weka.core.matrix.Matrix;
 
 //la classe eigenspace
