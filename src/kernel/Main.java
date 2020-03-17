@@ -23,7 +23,7 @@ public class Main{
             Acp pca = new Acp(3500);
             pca.trainModel();
             System.out.println("Training finished");
-            Result result = pca.recognize("orl/PERSON1/7.bmp");
+            Result result = pca.recognize("orl/PERSON10/7.bmp");
             System.out.println(result);
 
     }
