@@ -25,8 +25,11 @@ public class EigenSpace {
 
     public double getDistance(Matrix vector1, Matrix vector2){
 
-        /// vector1 and vector2 must have the same dimension
+        // vector1 and vector2 must have the same dimension
+        assert vector1.getRowDimension() == vector2.getRowDimension();
+
         int dim = vector1.getRowDimension();
+
         int s = 0;
         for (int i = 0; i < dim; i++) {
             s += Math.pow(vector1.get(i, 0) - vector2.get(i, 0), 2);
